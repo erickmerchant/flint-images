@@ -22,9 +22,7 @@ export async function list(
   const imagePromises = [];
   let i = 0;
 
-  for await (
-    const { name, path } of Fs.expandGlob(pathname)
-  ) {
+  for await (const { name, path } of Fs.expandGlob(pathname)) {
     imagePromises.push(
       sharp(path)
         .metadata()
@@ -90,9 +88,7 @@ export default function (
     ) =>
       Object
         .keys(sizes)
-        .map((
-          size,
-        ) => [
+        .map((size) => [
           `/media/images/${name}/${size}.jpeg`,
         ])
         .flat()),
