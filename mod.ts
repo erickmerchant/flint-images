@@ -74,7 +74,7 @@ export default function (
         }
 
         img = img.jpeg({
-          quality: 80,
+          quality: 100,
           progressive: true,
           force: true,
         });
