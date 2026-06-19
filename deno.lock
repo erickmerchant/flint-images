@@ -2,7 +2,7 @@
   "version": "5",
   "specifiers": {
     "jsr:@cfa/gitignore-parser@~0.1.4": "0.1.4",
-    "jsr:@flint/framework@~0.36.2": "0.36.2",
+    "jsr:@flint/framework@~0.36.3": "0.36.3",
     "jsr:@std/async@^1.4.0": "1.4.0",
     "jsr:@std/cli@^1.0.30": "1.0.30",
     "jsr:@std/crypto@^1.1.0": "1.1.0",
@@ -14,18 +14,16 @@
     "jsr:@std/path@^1.1.5": "1.1.5",
     "npm:html-rewriter-wasm@~0.4.1": "0.4.1",
     "npm:lightningcss@^1.32.0": "1.32.0",
-    "npm:sharp@~0.35.1": "0.35.2",
     "npm:sharp@~0.35.2": "0.35.2"
   },
   "jsr": {
     "@cfa/gitignore-parser@0.1.4": {
       "integrity": "60d3563bbd7b8797f50c28585d7d74d231fbb56a1d9df7b0673c27cbdf60a23a"
     },
-    "@flint/framework@0.36.2": {
-      "integrity": "6ca8d5723301adfbe33a4fa7bb43aee2238e655a8d0fa6ee5c7ad2b33b5cb5c3",
+    "@flint/framework@0.36.3": {
+      "integrity": "20cf284c626b7e27b293213732a298cb0254f06163e6447debadd7d6d146efa9",
       "dependencies": [
         "jsr:@cfa/gitignore-parser",
-        "jsr:@flint/framework",
         "jsr:@std/async",
         "jsr:@std/cli",
         "jsr:@std/crypto",
@@ -35,8 +33,7 @@
         "jsr:@std/media-types",
         "jsr:@std/path",
         "npm:html-rewriter-wasm",
-        "npm:lightningcss",
-        "npm:sharp@~0.35.1"
+        "npm:lightningcss"
       ]
     },
     "@std/async@1.4.0": {
@@ -377,7 +374,7 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@flint/framework@~0.36.2",
+      "jsr:@flint/framework@~0.36.3",
       "jsr:@std/fs@^1.0.24",
       "jsr:@std/path@^1.1.5",
       "npm:sharp@~0.35.2"
