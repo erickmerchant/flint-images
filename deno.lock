@@ -2,7 +2,7 @@
   "version": "5",
   "specifiers": {
     "jsr:@cfa/gitignore-parser@~0.1.4": "0.1.4",
-    "jsr:@flint/framework@~0.36.6": "0.36.6",
+    "jsr:@flint/framework@0.37": "0.37.0",
     "jsr:@std/async@^1.5.0": "1.5.0",
     "jsr:@std/cli@^1.0.32": "1.0.32",
     "jsr:@std/crypto@^1.1.0": "1.1.0",
@@ -21,8 +21,8 @@
     "@cfa/gitignore-parser@0.1.4": {
       "integrity": "60d3563bbd7b8797f50c28585d7d74d231fbb56a1d9df7b0673c27cbdf60a23a"
     },
-    "@flint/framework@0.36.6": {
-      "integrity": "b0eb5b3004d7a18a4618d14ccffc9102af7e383d0da14b29406c33fb00d704d3",
+    "@flint/framework@0.37.0": {
+      "integrity": "8867f7dd4cfe4a2f528f033597c89aa9e29d7c70f24f749cd96c58360d0c12f4",
       "dependencies": [
         "jsr:@cfa/gitignore-parser",
         "jsr:@std/async",
@@ -375,7 +375,7 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@flint/framework@~0.36.6",
+      "jsr:@flint/framework@0.37",
       "jsr:@std/fs@^1.0.24",
       "jsr:@std/path@^1.1.6",
       "npm:sharp@~0.35.3"
