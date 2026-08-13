@@ -4,6 +4,8 @@ import sharp from "sharp";
 import * as Path from "@std/path";
 import * as Fs from "@std/fs";
 
+type FlintImageExtensions = "jpeg" | "webp" | "avif";
+
 export type FlintImageMeta = Record<string, {
   height: number;
   width: number;
@@ -12,75 +14,67 @@ export type FlintImageMeta = Record<string, {
 
 export type FlintImageSizes = Record<
   string,
-  { height: number } | { width: number }
+  {
+    height: number;
+    ext?: FlintImageExtensions;
+  } | {
+    width: number;
+    ext?: FlintImageExtensions;
+  }
 >;
 
 export default function (
   directory: string,
-  sizes: FlintImageSizes,
-  type?: "jpeg" | "webp" | "avif",
+  ext: FlintImageExtensions,
+  variants: FlintImageSizes,
 ): ((app: FlintApplication) => void) & {
   list: () => Promise<Array<FlintImageMeta>>;
 } {
-  const pattern = p`/${directory}/:name*.jpeg`;
-  const path = pattern.pathname;
-  const ext = Path.extname(path);
-  const basename = Path.basename(path, ext);
-  const dirname = Path.dirname(path);
+  const pattern = p`/${directory}/:name.${ext}`;
 
   const cb = (app: FlintApplication) => {
-    app.route(
-      p`${dirname === "/" ? "" : dirname}/${basename}/:size.${
-        type ?? ext.slice(1)
-      }`,
-      ({ params }: FlintRouteContext) => {
-        if (
-          params.name && params.size &&
-          sizes[params.size as keyof typeof sizes] != null
-        ) {
-          const settings = sizes[params.size as keyof typeof sizes];
+    for (const [size, variant] of Object.entries(variants)) {
+      app.route(
+        p`/${directory}/:name/${size}.${variant.ext ?? ext}`,
+        ({ params }: FlintRouteContext) => {
+          if (params.name) {
+            let img = sharp(
+              `${
+                Path.join(Deno.cwd(), app.config().src, directory)
+              }/${params.name}.${ext}`,
+            );
 
-          let img = sharp(`./${directory}/${params.name}${ext}`);
+            img = img.resize(variant);
 
-          if ("height" in settings || "width" in settings) {
-            img = img.resize(settings);
+            const method = variant.ext ?? ext;
+
+            if (method === "jpeg" || method === "webp" || method === "avif") {
+              img = img[method]({
+                quality: 100,
+                progressive: true,
+                force: true,
+              });
+            }
+
+            return img.toBuffer() as Promise<Uint8Array<ArrayBuffer>>;
           }
 
-          const method = type ?? ext.slice(1);
-
-          if (method === "jpeg" || method === "webp" || method === "avif") {
-            img = img[method]({
-              quality: 100,
-              progressive: true,
-              force: true,
-            });
-          }
-
-          return img.toBuffer() as Promise<Uint8Array<ArrayBuffer>>;
-        }
-
-        throw Error("not found");
-      },
-      glob(pattern, (
-        _,
-        { name },
-      ) =>
-        Object
-          .keys(sizes)
-          .map((size) => [
-            `/${directory}/${name}/${size}.${type ?? ext.slice(1)}`,
-          ])
-          .flat()),
-    );
+          throw Error("not found");
+        },
+        glob(pattern, (
+          _,
+          { name },
+        ) => [`/${directory}/${name}/${size}.${variant.ext ?? ext}`]),
+      );
+    }
   };
 
   cb.list = async (): Promise<Array<FlintImageMeta>> => {
-    const pattern = `./${directory}/**/*.jpeg`;
-    const ext = Path.extname(pattern);
+    const pattern = `./${directory}/**/*.${ext}`;
     const imagePromises = [];
 
     for await (let { name, path } of Fs.expandGlob(pattern)) {
-      name = Path.basename(name, ext);
+      name = Path.basename(name, `.${ext}`);
 
       imagePromises.push(
         sharp(path)
@@ -88,25 +82,24 @@ export default function (
           .then((metadata) => {
             const result: FlintImageMeta = {};
 
-            for (const key of Object.keys(sizes)) {
-              const config = sizes[key];
+            for (const [size, variant] of Object.entries(variants)) {
               let height = metadata.height;
               let width = metadata.width;
 
-              if ("height" in config) {
-                height = config.height;
+              if ("height" in variant) {
+                height = variant.height;
                 width = metadata.width / metadata.height *
-                  config.height;
+                  variant.height;
               }
 
-              if ("width" in config) {
-                width = config.width;
+              if ("width" in variant) {
+                width = variant.width;
                 height = metadata.height / metadata.width *
-                  config.width;
+                  variant.width;
               }
 
-              result[key] = {
-                src: `/${directory}/${name}/${key}.${type}`,
+              result[size] = {
+                src: `/${directory}/${name}/${size}.${variant.ext ?? ext}`,
                 height,
                 width,
               };
