@@ -1,12 +1,12 @@
 {
   "name": "@flint/images",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "license": "MIT",
   "exports": {
     ".": "./mod.ts"
   },
   "imports": {
-    "@flint/framework": "jsr:@flint/framework@^0.39.1",
+    "@flint/framework": "jsr:@flint/framework@^0.40.1",
     "@std/fs": "jsr:@std/fs@^1.0.24",
     "@std/path": "jsr:@std/path@^1.1.6",
     "sharp": "npm:sharp@^0.35.4"
