@@ -1,15 +1,15 @@
 {
   "name": "@flint/images",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "license": "MIT",
   "exports": {
     ".": "./mod.ts"
   },
   "imports": {
-    "@flint/framework": "jsr:@flint/framework@^0.41.1",
+    "@flint/framework": "jsr:@flint/framework@^0.41.2",
     "@std/fs": "jsr:@std/fs@^1.0.24",
     "@std/path": "jsr:@std/path@^1.1.6",
-    "sharp": "npm:sharp@^0.35.4"
+    "sharp": "npm:sharp@^0.35.5"
   },
   "compilerOptions": {
     "lib": ["deno.ns", "deno.unstable", "deno.worker"]
